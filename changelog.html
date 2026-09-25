@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GlooobDomo Bot — Changelog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12161c;
+    --panel:#171d26;
+    --line:#262e3a;
+    --text:#e7eaee;
+    --muted:#8b93a1;
+    --amber:#e8a33d;
+    --teal:#4fd1c5;
+    --rose:#e8615f;
+    --violet:#9b8cf2;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --display: 'Space Grotesk', system-ui, sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--body);}
+  body{line-height:1.5;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  ::selection{background:var(--amber);color:#12161c;}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+
+  /* header */
+  header{
+    position:sticky;top:0;z-index:10;
+    background:rgba(18,22,28,.9);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .headbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:760px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:15px;}
+  .led{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);flex:none;}
+  .repo-link{font-family:var(--mono);font-size:13px;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:6px 12px;border-radius:4px;transition:border-color .15s, color .15s;}
+  .repo-link:hover{border-color:var(--amber);color:var(--text);}
+
+  /* hero */
+  .hero{padding:64px 0 48px;border-bottom:1px solid var(--line);}
+  .hero h1{font-family:var(--display);font-weight:700;font-size:34px;letter-spacing:-0.01em;margin:0 0 12px;}
+  .hero p{color:var(--muted);font-size:16px;max-width:480px;margin:0 0 28px;}
+  .version-now{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--mono);}
+  .version-now .num{font-size:28px;font-weight:500;color:var(--amber);}
+  .version-now .lbl{font-size:13px;color:var(--muted);}
+
+  /* filters — light-switch style */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);}
+  .switch{
+    display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;
+    font-family:var(--mono);font-size:12.5px;color:var(--muted);
+    border:1px solid var(--line);border-radius:4px;padding:7px 11px 7px 9px;
+    transition:border-color .15s,color .15s;
+  }
+  .switch input{display:none;}
+  .switch .dot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .15s,box-shadow .15s;flex:none;}
+  .switch[data-type="added"] .dot{background:#2b3a3a;}
+  .switch[data-type="changed"] .dot{background:#3a3226;}
+  .switch[data-type="fixed"] .dot{background:#3a2828;}
+  .switch.on{color:var(--text);border-color:var(--line);}
+  .switch.on[data-type="added"] .dot{background:var(--teal);box-shadow:0 0 6px var(--teal);}
+  .switch.on[data-type="changed"] .dot{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+  .switch.on[data-type="fixed"] .dot{background:var(--rose);box-shadow:0 0 6px var(--rose);}
+
+  /* timeline */
+  .timeline{position:relative;padding:48px 0 64px;}
+  .timeline::before{
+    content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;
+    background:repeating-linear-gradient(to bottom, var(--line) 0 4px, transparent 4px 8px);
+  }
+  .entry{position:relative;padding-left:32px;margin-bottom:52px;}
+  .entry:last-child{margin-bottom:0;}
+  .entry::before{
+    content:"";position:absolute;left:0;top:6px;width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--amber);
+  }
+  .entry.minor::before{border-color:var(--muted);width:9px;height:9px;left:1px;}
+
+  .entry-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+  .entry-head .v{font-family:var(--display);font-weight:600;font-size:20px;}
+  .entry-head time{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+  .entry-summary{color:var(--muted);font-size:14.5px;margin:0 0 16px;}
+
+  .changes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  .changes li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;}
+  .changes li .tag-dot{width:6px;height:6px;border-radius:50%;margin-top:7px;flex:none;}
+  .changes li[data-type="added"] .tag-dot{background:var(--teal);}
+  .changes li[data-type="changed"] .tag-dot{background:var(--amber);}
+  .changes li[data-type="fixed"] .tag-dot{background:var(--rose);}
+  .changes li span.txt{color:var(--text);}
+  .changes li code{font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:1px 5px;}
+
+  footer{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--muted);font-size:13px;font-family:var(--mono);}
+
+  @media (max-width:600px){
+    .hero{padding:44px 0 36px;}
+    .hero h1{font-size:27px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="headbar">
+    <div class="brand"><span class="led"></span>GlooobDomo Bot</div>
+    <a class="repo-link" href="#" target="_blank" rel="noopener">Voir sur GitHub</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <h1>Changelog</h1>
+    <p>Historique des évolutions du bot de modération et d'automatisation du forum GlooobDomo.</p>
+    <div class="version-now">
+      <span class="num">v1.3.0</span>
+      <span class="lbl">en production</span>
+    </div>
+  </section>
+
+  <div class="filters" id="filters">
+    <label class="switch on" data-type="added"><input type="checkbox" checked><span class="dot"></span>Ajouts</label>
+    <label class="switch on" data-type="changed"><input type="checkbox" checked><span class="dot"></span>Changements</label>
+    <label class="switch on" data-type="fixed"><input type="checkbox" checked><span class="dot"></span>Corrections</label>
+  </div>
+
+  <div class="timeline" id="timeline">
+
+    <article class="entry" data-version="1.3.0">
+      <div class="entry-head"><span class="v">v1.3.0</span><time>15 sept. 2026</time></div>
+      <p class="entry-summary">Suivi automatique des threads inactifs.</p>
+      <ul class="changes">
+        <li data-type="added"><span class="tag-dot"></span><span class="txt">Détection des threads inactifs avec avertissement automatique avant archivage.</span></li>
+        <li data-type="added"><span class="tag-dot"></span><span class="txt">Nouveau délai configurable par salon via <code>!config inactivite</code>.</span></li>
+        <li data-type="changed"><span class="tag-dot"></span><span class="txt">Les messages d'avertissement sont désormais envoyés en fil plutôt qu'en DM.</span></li>
+      </ul>
+    </article>
+
+    <article class="entry" data-version="1.2.0">
+      <div class="entry-head"><span class="v">v1.2.0</span><time>2 août 2026</time></div>
+      <p class="entry-summary">Gestion de la résolution des threads.</p>
+      <ul class="changes">
+        <li data-type="added"><span class="tag-dot"></span><span class="txt">Commande <code>!resolu</code> pour verrouiller et archiver un fil résolu.</span></li>
+        <li data-type="added"><span class="tag-dot"></span><span class="txt">Archivage automatique des threads marqués résolus après 24h.</span></li>
+        <li data-type="fixed"><span class="tag-dot"></span><span class="txt">Correction d'un cas où le bot archivait un fil déjà verrouillé manuellement.</span></li>
+      </ul>
+    </article>
+
+    <article class="entry minor" data-version="1.1.0">
+      <div class="entry-head"><span class="v">v1.1.0</span><time>19 juil. 2026</time></div>
+      <p class="entry-summary">Étiquetage automatique des sujets du forum.</p>
+      <ul class="changes">
+        <li data-type="added"><span class="tag-dot"></span><span class="txt">Application automatique des tags forum selon les mots-clés du message d'ouverture.</span></li>
+        <li data-type="fixed"><span class="tag-dot"></span><span class="txt">Le bot ne dupliquait plus les tags déjà posés manuellement.</span></li>
+      </ul>
+    </article>
+
+    <article class="entry" data-version="1.0.0">
+      <div class="entry-head"><span class="v">v1.0.0</span><time>28 juin 2026</time></div>
+      <p class="entry-summary">Première version déployée en production.</p>
+      <ul class="changes">
+        <li data-type="added"><span class="tag-dot"></span><span class="txt">Bot d'automatisation de forum construit sur discord.js v14, déployé via Railway.</span></li>
+        <li data-type="added"><span class="tag-dot"></span><span class="txt">Verrouillage et archivage manuel des threads par les modérateurs.</span></li>
+      </ul>
+    </article>
+
+  </div>
+
+  <footer>GlooobDomo — journal des mises à jour</footer>
+</div>
+
+<script>
+  const filters = document.querySelectorAll('#filters .switch');
+  filters.forEach(f => {
+    f.addEventListener('click', () => {
+      f.classList.toggle('on');
+      const input = f.querySelector('input');
+      input.checked = f.classList.contains('on');
+      applyFilters();
+    });
+  });
+  function applyFilters(){
+    const active = new Set([...filters].filter(f=>f.classList.contains('on')).map(f=>f.dataset.type));
+    document.querySelectorAll('.changes li').forEach(li=>{
+      li.style.display = active.has(li.dataset.type) ? 'flex' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
